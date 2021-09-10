@@ -110,9 +110,11 @@ components:
           type: string
         tag:
           type: string
-        date:
+        updatedDateUTC:
+          description: Last modified date UTC format
           type: string
-          x-is-date: true
+          example: "/Date(1573755038314)/"
+          x-is-msdate-time: true
     Pets:
       type: array
       items:
