@@ -110,11 +110,11 @@ components:
           type: string
         tag:
           type: string
-        updatedDateUTC:
-          description: Last modified date UTC format
+        dob:
+          description: Date of birth – YYYY-MM-DD
           type: string
           example: "/Date(1573755038314)/"
-          x-is-msdate-time: true
+          x-is-msdate: true
     Pets:
       type: array
       items:
