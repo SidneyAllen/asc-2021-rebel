@@ -44,6 +44,22 @@ paths:
       operationId: createPets
       tags:
         - pets
+      requestBody:
+        required: true
+        description: Request of type Pet object 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pets'
+            example: '{  
+                        "Pets":[  
+                          {  
+                              "id":"123456",
+                              "name":"Fido",
+                              "tag":"dog"
+                          }
+                        ]
+                      }'
       responses:
         '201':
           description: Null response
