@@ -79,14 +79,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Pets'
-            example: '{  
-                        "Pets":[  
-                          {  
-                              "id":"123456",
-                              "name":"Fido",
-                              "tag":"dog"
-                          }
-                        ]
+            example: '{   
+                          "name":"Fido",
+                          "tag":"dog"
+                          "date":"7-1-2019",
                       }'
       responses:
         '201':
