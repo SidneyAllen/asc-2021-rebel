@@ -44,6 +44,34 @@ paths:
       operationId: createPets
       tags:
         - pets
+      x-example:
+        - object:
+          is_object: true
+          key: pet
+          keyPascal: Pet
+        - name:
+          key: name
+          keyPascal: Name
+          default: Fido
+          object: pet
+        - tag:
+          key: tag
+          keyPascal: Tag
+          default: dog
+          nonString: true
+          php: PetAPI\PetPHP\Models\PetTag::DOG
+          node: PetTag.DOG
+          ruby: PetRuby::Pet::PetTag::DOG
+          python: PetTag.DOG
+          java: com.xero.models.PetTag.DOG
+          csharp: PetTag.DOG
+          object: pet
+        - date:
+          is_last: true
+          key: date
+          keyPascal: Date
+          default: "7-1-2019"
+          object: pet
       requestBody:
         required: true
         description: Request of type Pet object 
@@ -110,6 +138,11 @@ components:
           type: string
         tag:
           type: string
+          enum:
+          - dog
+          - cat
+          - fish
+          - hamster
         dob:
           description: Date of birth – YYYY-MM-DD
           type: string
