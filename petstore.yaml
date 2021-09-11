@@ -150,7 +150,6 @@ components:
           description: The date when the pet was created
           type: string
           format: date-time
-          x-php-format: '\DateTime'
           example: "2021-07-01T13:46:12.5144700"
     Pets:
       type: array
