@@ -78,8 +78,8 @@ paths:
               $ref: '#/components/schemas/Pet'
             example: '{   
                           "name":"Fido",
-                          "tag":"dog"
-                          "date":"7-1-2019",
+                          "tag":"dog",
+                          "dob":"7-1-2019"
                       }'
       responses:
         '201':
