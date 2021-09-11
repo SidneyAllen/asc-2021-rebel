@@ -141,7 +141,7 @@ components:
           type: string
           example: "/Date(1573755038314)/"
           x-is-msdate: true
-        adoptionDateTime:
+        adoptionDate:
           description: The date and time when the pet was adopted
           type: string
           format: date
