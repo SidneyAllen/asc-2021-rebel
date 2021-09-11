@@ -144,7 +144,7 @@ components:
         adoptionDateTime:
           description: The date and time when the pet was adopted
           type: string
-          format: date-time
+          format: date
           example: "2021-09-10T11:30:00"
         createdDate:
           description: The date when the pet was created
