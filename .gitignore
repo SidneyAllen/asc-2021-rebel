@@ -1,0 +1,6 @@
+/generator/output/docs/
+/generator/output/java/
+/generator/output/php/
+.project
+.settings
+.DS_Store
