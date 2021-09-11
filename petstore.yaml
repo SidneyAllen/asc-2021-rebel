@@ -71,6 +71,7 @@ paths:
           key: date
           keyPascal: Date
           default: "7-1-2019"
+          is_date: true
           object: pet        
         - pets:
           is_object: true
