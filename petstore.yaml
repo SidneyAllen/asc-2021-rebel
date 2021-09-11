@@ -62,10 +62,10 @@ paths:
           php: PetAPI\PetPHP\Models\PetTag::DOG
           java: com.pet.models.Pet.TagEnum.DOG
           object: pet
-        - date:
+        - dob:
           is_last: true
-          key: date
-          keyPascal: Date
+          key: dob
+          keyPascal: Dob
           default: "7-1-2019"
           is_date: true
           object: pet        

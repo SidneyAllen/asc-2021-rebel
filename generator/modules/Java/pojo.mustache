@@ -1,0 +1,384 @@
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+/**
+ * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
+ */{{#description}}
+@ApiModel(description = "{{{description}}}"){{/description}}
+{{>generatedAnnotation}}{{#discriminator}}{{>typeInfoAnnotation}}{{/discriminator}}{{>xmlAnnotation}}
+public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcelableModel}}implements Parcelable {{#serializableModel}}, Serializable {{/serializableModel}}{{/parcelableModel}}{{^parcelableModel}}{{#serializableModel}}implements Serializable {{/serializableModel}}{{/parcelableModel}}{
+  StringUtil util = new StringUtil();
+{{#serializableModel}}
+  private static final long serialVersionUID = 1L;
+
+
+{{/serializableModel}}
+  {{#vars}}
+    {{#isEnum}}
+    {{^isContainer}}
+{{>modelInnerEnum}}
+    {{/isContainer}}
+    {{#isContainer}}
+    {{#mostInnerItems}}
+{{>modelInnerEnum}}
+    {{/mostInnerItems}}
+    {{/isContainer}}
+    {{/isEnum}}
+  {{#jackson}}
+
+  @JsonProperty("{{baseName}}")
+  {{#withXml}}
+    {{^isContainer}}
+  @JacksonXmlProperty({{#isXmlAttribute}}isAttribute = true, {{/isXmlAttribute}}{{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}localName = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
+    {{/isContainer}}
+    {{#isContainer}}
+      {{#isXmlWrapped}}
+  // items.xmlName={{items.xmlName}}
+  @JacksonXmlElementWrapper(useWrapping = {{isXmlWrapped}}, {{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}localName = "{{#items.xmlName}}{{items.xmlName}}{{/items.xmlName}}{{^items.xmlName}}{{items.baseName}}{{/items.xmlName}}")
+      {{/isXmlWrapped}}
+    {{/isContainer}}
+  {{/withXml}}
+  {{/jackson}}
+  {{#withXml}}
+  {{#isXmlAttribute}}
+  @XmlAttribute(name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
+  {{/isXmlAttribute}}
+  {{^isXmlAttribute}}
+    {{^isContainer}}
+  @XmlElement({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
+    {{/isContainer}}
+    {{#isContainer}}
+  // Is a container wrapped={{isXmlWrapped}}
+      {{#items}}
+  // items.name={{name}} items.baseName={{baseName}} items.xmlName={{xmlName}} items.xmlNamespace={{xmlNamespace}}
+  // items.example={{example}} items.type={{dataType}}
+  @XmlElement({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
+      {{/items}}
+      {{#isXmlWrapped}}
+  @XmlElementWrapper({{#xmlNamespace}}namespace="{{xmlNamespace}}", {{/xmlNamespace}}name = "{{#xmlName}}{{xmlName}}{{/xmlName}}{{^xmlName}}{{baseName}}{{/xmlName}}")
+      {{/isXmlWrapped}}
+    {{/isContainer}}
+  {{/isXmlAttribute}}
+  {{/withXml}}
+  {{#gson}}
+  public static final String SERIALIZED_NAME_{{nameInSnakeCase}} = "{{baseName}}";
+  @SerializedName(SERIALIZED_NAME_{{nameInSnakeCase}})
+  {{/gson}}
+  private {{#vendorExtensions}}{{^x-is-msdate}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{/x-is-msdate}}{{^x-is-datetime}}{{{datatypeWithEnum}}}{{/x-is-datetime}}{{/vendorExtensions}} {{name}}{{#defaultValue}} = {{{.}}}{{/defaultValue}};
+  {{/vars}}
+  {{#parcelableModel}}
+  public {{classname}}() {
+  {{#parent}}
+    super();
+  {{/parent}}
+  {{#gson}}
+  {{#discriminator}}
+    this.{{{discriminatorName}}} = this.getClass().getSimpleName();
+  {{/discriminator}}
+  {{/gson}}
+  }
+  {{/parcelableModel}}
+  {{^parcelableModel}}
+  {{#gson}}
+  {{#discriminator}}
+   /**
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+  **/
+  public {{classname}}() {
+    this.{{{discriminatorName}}} = this.getClass().getSimpleName();
+  }
+  {{/discriminator}}
+  {{/gson}}
+  {{/parcelableModel}}
+  {{#vars}}
+  {{^isReadOnly}}
+  /**
+  {{#description}}
+  * {{description}}
+  {{/description}}
+  {{^description}}
+  * {{name}}
+  {{/description}}
+  * @param {{name}} {{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}} {{#isListContainer}}List&lt;{{{complexType}}}&gt;{{/isListContainer}}{{^isListContainer}}{{{datatypeWithEnum}}}{{/isListContainer}}{{/x-is-datetime}}{{/vendorExtensions}}
+  * @return {{classname}}
+  **/
+  public {{classname}} {{name}}({{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}}{{{datatypeWithEnum}}}{{/x-is-datetime}}{{/vendorExtensions}} {{name}}) {
+    this.{{name}} = {{name}};
+    return this;
+  }
+  {{#isListContainer}}
+
+  /**
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+   * @param {{name}}Item {{{items.datatypeWithEnum}}} 
+   * @return {{classname}}
+  **/
+  public {{classname}} add{{nameInCamelCase}}Item({{{items.datatypeWithEnum}}} {{name}}Item) {
+    {{^required}}
+    if (this.{{name}} == null) {
+      this.{{name}} = {{{defaultValue}}};
+    }
+    {{/required}}
+    this.{{name}}.add({{name}}Item);
+    return this;
+  }
+  {{/isListContainer}}
+  {{#isMapContainer}}
+
+  /** 
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+   * @param key String
+   * @param {{name}}Item {{{items.datatypeWithEnum}}} 
+   * @return {{classname}}
+  **/
+  public {{classname}} put{{nameInCamelCase}}Item(String key, {{{items.datatypeWithEnum}}} {{name}}Item) {
+    {{^required}}
+    if (this.{{name}} == null) {
+      this.{{name}} = {{{defaultValue}}};
+    }
+    {{/required}}
+    this.{{name}}.put(key, {{name}}Item);
+    return this;
+  }
+  {{/isMapContainer}}
+
+  {{/isReadOnly}}
+   /**
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * Get {{name}}
+  {{/description}}
+  {{#minimum}}
+   * minimum: {{minimum}}
+  {{/minimum}}
+  {{#maximum}}
+   * maximum: {{maximum}}
+  {{/maximum}}
+   * @return {{name}}
+  **/
+{{#useBeanValidation}}{{>beanValidation}}{{/useBeanValidation}}  @ApiModelProperty({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
+{{#vendorExtensions.extraAnnotation}}
+  {{{vendorExtensions.extraAnnotation}}}
+{{/vendorExtensions.extraAnnotation}}
+  /** 
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+   * @return {{name}} {{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}}{{{datatypeWithEnum}}}{{/x-is-datetime}}{{/vendorExtensions}}
+  **/
+  public {{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}}{{{datatypeWithEnum}}}{{/x-is-datetime}}{{/vendorExtensions}} {{getter}}() {
+    return {{name}};
+  }{{#vendorExtensions}}{{#x-is-msdate}}
+  /** 
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+   * @return LocalDate
+  **/
+  public LocalDate {{getter}}AsDate() {
+    if (this.{{name}} != null) {
+      try {
+        return util.convertStringToDate(this.{{name}});
+      } catch (IOException e) {
+        e.printStackTrace();
+      }  
+    }
+    return null;        
+  }{{/x-is-msdate}}
+  {{/vendorExtensions}}{{^isReadOnly}}
+
+  /** 
+  {{#description}}
+  * {{description}}
+  {{/description}}
+  {{^description}}
+  * {{name}}
+  {{/description}}
+  * @param {{name}} {{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}}{{#isListContainer}}List&lt;{{{complexType}}}&gt;{{/isListContainer}} {{^isListContainer}}{{{datatypeWithEnum}}}{{/isListContainer}}{{/x-is-datetime}}{{/vendorExtensions}}
+  **/
+
+  public void {{setter}}({{#vendorExtensions}}{{#x-is-datetime}}LocalDateTime{{/x-is-datetime}}{{^x-is-datetime}}{{{datatypeWithEnum}}}{{/x-is-datetime}}{{/vendorExtensions}} {{name}}) {
+    this.{{name}} = {{name}};
+  }{{#vendorExtensions}}{{#x-is-msdate}}
+
+  /** 
+  {{#description}}
+  * {{description}}
+  {{/description}}
+  {{^description}}
+  * {{name}}
+  {{/description}}
+  * @param {{name}} {{#vendorExtensions}}{{#x-is-msdate}}LocalDateTime{{/x-is-msdate}}{{^x-is-msdate}}{{{datatypeWithEnum}}}{{/x-is-msdate}}{{/vendorExtensions}}
+  **/
+  public void {{setter}}({{#vendorExtensions}}{{#x-is-msdate}}LocalDate{{/x-is-msdate}}{{/vendorExtensions}} {{name}}) {
+    //CONVERT LocalDate args into MS DateFromat String
+    Instant instant =  {{name}}.atStartOfDay(ZoneId.of("UTC").normalized()).toInstant();  
+    long timeInMillis = instant.toEpochMilli();
+
+    this.{{name}} = "/Date(" + Long.toString(timeInMillis) + "+0000)/";
+  }{{/x-is-msdate}}{{/vendorExtensions}}{{/isReadOnly}}
+
+  {{/vars}}
+
+{{^supportJava6}}
+  @Override
+  public boolean equals(java.lang.Object o) {
+  {{#useReflectionEqualsHashCode}}
+    return EqualsBuilder.reflectionEquals(this, o);
+  {{/useReflectionEqualsHashCode}}
+  {{^useReflectionEqualsHashCode}}
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }{{#hasVars}}
+    {{classname}} {{classVarName}} = ({{classname}}) o;
+    return {{#vars}}{{#isByteArray}}Arrays{{/isByteArray}}{{^isByteArray}}Objects{{/isByteArray}}.equals(this.{{name}}, {{classVarName}}.{{name}}){{#hasMore}} &&
+        {{/hasMore}}{{/vars}}{{#parent}} &&
+        super.equals(o){{/parent}};{{/hasVars}}{{^hasVars}}
+    return {{#parent}}super.equals(o){{/parent}}{{^parent}}true{{/parent}};{{/hasVars}}
+  {{/useReflectionEqualsHashCode}}
+  }
+
+  @Override
+  public int hashCode() {
+  {{#useReflectionEqualsHashCode}}
+    return HashCodeBuilder.reflectionHashCode(this);
+  {{/useReflectionEqualsHashCode}}
+  {{^useReflectionEqualsHashCode}}
+    return Objects.hash({{#vars}}{{^isByteArray}}{{name}}{{/isByteArray}}{{#isByteArray}}Arrays.hashCode({{name}}){{/isByteArray}}{{#hasMore}}, {{/hasMore}}{{/vars}}{{#parent}}{{#hasVars}}, {{/hasVars}}super.hashCode(){{/parent}});
+  {{/useReflectionEqualsHashCode}}
+  }
+
+{{/supportJava6}}
+{{#supportJava6}}
+  @Override
+  public boolean equals(java.lang.Object o) {
+  if (this == o) {
+    return true;
+  }
+  if (o == null || getClass() != o.getClass()) {
+    return false;
+  }{{#hasVars}}
+    {{classname}} {{classVarName}} = ({{classname}}) o;
+    return {{#vars}}ObjectUtils.equals(this.{{name}}, {{classVarName}}.{{name}}){{#hasMore}} &&
+    {{/hasMore}}{{/vars}}{{#parent}} &&
+    super.equals(o){{/parent}};{{/hasVars}}{{^hasVars}}
+    return true;{{/hasVars}}
+  }
+
+  @Override
+  public int hashCode() {
+    return ObjectUtils.hashCodeMulti({{#vars}}{{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}{{#parent}}{{#hasVars}}, {{/hasVars}}super.hashCode(){{/parent}});
+  }
+
+{{/supportJava6}}
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class {{classname}} {\n");
+    {{#parent}}
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+    {{/parent}}
+    {{#vars}}
+    sb.append("    {{name}}: ").append(toIndentedString({{name}})).append("\n");
+    {{/vars}}
+    sb.append("}");
+    return sb.toString();
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
+  }
+
+{{#parcelableModel}}
+
+  public void writeToParcel(Parcel out, int flags) {
+{{#model}}
+{{#isArrayModel}}
+    out.writeList(this);
+{{/isArrayModel}}
+{{^isArrayModel}}
+{{#parent}}
+    super.writeToParcel(out, flags);
+{{/parent}}
+{{#vars}}
+    out.writeValue({{name}});
+{{/vars}}
+{{/isArrayModel}}
+{{/model}}
+  }
+
+  {{classname}}(Parcel in) {
+{{#isArrayModel}}
+    in.readTypedList(this, {{arrayModelType}}.CREATOR);
+{{/isArrayModel}}
+{{^isArrayModel}}
+{{#parent}}
+    super(in);
+{{/parent}}
+{{#vars}}
+{{#isPrimitiveType}}
+    {{name}} = ({{{datatypeWithEnum}}})in.readValue(null);
+{{/isPrimitiveType}}
+{{^isPrimitiveType}}
+    {{name}} = ({{{datatypeWithEnum}}})in.readValue({{complexType}}.class.getClassLoader());
+{{/isPrimitiveType}}
+{{/vars}}
+{{/isArrayModel}}
+  }
+
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Parcelable.Creator<{{classname}}> CREATOR = new Parcelable.Creator<{{classname}}>() {
+    public {{classname}} createFromParcel(Parcel in) {
+{{#model}}
+{{#isArrayModel}}
+      {{classname}} result = new {{classname}}();
+      result.addAll(in.readArrayList({{arrayModelType}}.class.getClassLoader()));
+      return result;
+{{/isArrayModel}}
+{{^isArrayModel}}
+      return new {{classname}}(in);
+{{/isArrayModel}}
+{{/model}}
+    }
+    public {{classname}}[] newArray(int size) {
+      return new {{classname}}[size];
+    }
+  };
+{{/parcelableModel}}
+}

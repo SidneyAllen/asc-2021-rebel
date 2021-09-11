@@ -1,0 +1,14 @@
+{
+    "artifactId": "pet-java",
+    "apiPackage" : "com.pet.api.client",
+    "artifactDescription": "java sdk for Pet API",
+    "groupId" : "com.github.sidneyallen",
+    "artifactVersion" : "0.0.1",
+    "name" : "Pet-Java SDK",
+    "artifactUrl" : "https://github.com/SidneyAllen/asc-2021-rebel",    
+    "developerName" : "SidneyAllen",
+    "developerEmail" : "sid.maestre@lob.com",
+    "developerOrganization" : "Lob",
+    "hideGenerationTimestamp": "true",
+    "developerOrganizationUrl" : "https://www.lob.com/developers"
+}

@@ -1,0 +1,8 @@
+{
+    "composerVendorName" : "PetAPI",
+    "gitRepoId" : "asc-2021-rebel",
+    "gitUserId" : "SidneyAllen",
+    "httpUserAgent" : "pet-php (0.0.1)",
+    "appDescription" : "php sdk for Pet API",
+    "artifactVersion" : "0.0.1"
+}
