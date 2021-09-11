@@ -63,7 +63,7 @@ paths:
           node: PetTag.DOG
           ruby: PetRuby::Pet::PetTag::DOG
           python: PetTag.DOG
-          java: com.xero.models.PetTag.DOG
+          java: com.pet.models.PetTag.DOG
           csharp: PetTag.DOG
           object: pet
         - date:
@@ -71,6 +71,16 @@ paths:
           key: date
           keyPascal: Date
           default: "7-1-2019"
+          object: pet        
+        - pets:
+          is_object: true
+          key: pets
+          keyPascal: Pets
+        - add_pets:
+          is_last: true
+          is_array_add: true
+          key: pets
+          keyPascal: Pets
           object: pet
       requestBody:
         required: true
@@ -78,7 +88,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pets'
+              $ref: '#/components/schemas/Pet'
             example: '{   
                           "name":"Fido",
                           "tag":"dog"
