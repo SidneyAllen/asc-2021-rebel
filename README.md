@@ -58,7 +58,7 @@ In the pojo.mustache template  an alternate method this is added only if x-is-ms
 {{/vendorExtensions}}
 ```
 
-The code that is generated includes a getter
+The code that is generated includes a getter and setter (not shown below)
 
 ```
 public LocalDate getDobAsDate() {
@@ -70,18 +70,6 @@ public LocalDate getDobAsDate() {
       }  
     }
   return null;        
-}
-```
-
-and setter
-
-```
-public void setDob(LocalDate dob) {
-    //CONVERT LocalDate args into MS DateFromat String
-    Instant instant =  dob.atStartOfDay(ZoneId.of("UTC").normalized()).toInstant();  
-    long timeInMillis = instant.toEpochMilli();
-
-    this.dob = "/Date(" + Long.toString(timeInMillis) + "+0000)/";
 }
 ```
 
