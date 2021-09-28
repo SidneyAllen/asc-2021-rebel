@@ -20,13 +20,54 @@ Return to the generator folder and run the build.sh file.
 ## Custom Property
 A custom property has been added to the Pet schema.  The extension is a boolean and used to identify properties which are dates, but do not follow a standard date format.  In this example, the date format created by Microsoft called. MSJSON dateformat.
 
-`dob:
-description: Date of birth – YYYY-MM-DD
-type: string
-example: "/Date(1573755038314)/"
-x-is-msdate: true`
+dob:
+    description: Date of birth – YYYY-MM-DD
+    type: string
+    example: "/Date(1573755038314)/"
+    x-is-msdate: true`
 
 The OpenAPI extension is defined as x-is-msdate and used in the mustache templates for the Java SDK to modify the code generated so a native Java date is both returned and accepted then converted to MSJSON date format.
 
 ## Custom Object
-A custom object has been added to the Pet create operation.  
+A custom object has been added to the Pet create operation. Objects are for defining more complex object, arrays or a combination of both.  In this example, we are defining the struture of an example requestBody in a non-language specific way, so that runnable code examples can be generated for our SDK documentation.
+
+x-example:
+    - object:
+        is_object: true
+        key: pet
+        keyPascal: Pet
+    - name:
+        key: name
+        keyPascal: Name
+        default: Fido
+        object: pet
+    - tag:
+        key: tag
+        keyPascal: Tag
+        default: dog
+        nonString: true
+        php: PetAPI\PetPHP\Models\PetTag::DOG
+        java: com.pet.models.Pet.TagEnum.DOG
+        object: pet
+    - dob:
+        is_last: true
+        key: dob
+        keyPascal: Dob
+        default: "7-1-2019"
+        is_date: true
+        object: pet
+
+The custom object produces the following Java code snippet.
+
+`Pet pet = new Pet();
+pet.setName("Fido");
+pet.setTag(com.pet.models.Pet.TagEnum.DOG);
+pet.setDob(new Date("7-1-2019"));
+
+try {
+    apiInstance.createPets(pet);
+} catch (ApiException e) {
+    System.err.println("Exception when calling PetsApi#createPets");
+    e.printStackTrace();
+}`
+
