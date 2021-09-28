@@ -20,7 +20,7 @@ Return to the generator folder and run the build.sh file.
 The results can be found in the **output** folder.
 
 ## Custom Property
-A custom property has been added to the Pet schema.  The extension is a boolean and used to identify properties which are dates, but do not follow a standard date format.  In this example, the date format created by Microsoft called. MSJSON dateformat.
+A custom property has been added to the Pet schema.  The extension is a boolean and used to identify properties which are dates, but do not follow a standard date format.  In this example, Microsoft's MSJSON date format.
 
 The OpenAPI extension is defined as x-is-msdate and used in the mustache templates for the Java SDK to modify the code generated so a native Java date is both returned and accepted then converted to MSJSON date format.
 
@@ -124,11 +124,13 @@ In our mustache template, we wrap our custom object in the <vendorExtension> tag
 The custom object produces the following Java code snippet.
 
 ```
+// Generated code
 Pet pet = new Pet();
 pet.setName("Fido");
 pet.setTag(com.pet.models.Pet.TagEnum.DOG);
 pet.setDob(new Date("7-1-2019"));
 
+// Static code
 try {
     apiInstance.createPets(pet);
 } catch (ApiException e) {
@@ -136,4 +138,3 @@ try {
     e.printStackTrace();
 }
 ```
-
