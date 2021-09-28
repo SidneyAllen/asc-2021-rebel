@@ -17,6 +17,8 @@ Return to the generator folder and run the build.sh file.
 
 `./build.sh`
 
+The results can be found in the **output** folder.
+
 ## Custom Property
 A custom property has been added to the Pet schema.  The extension is a boolean and used to identify properties which are dates, but do not follow a standard date format.  In this example, the date format created by Microsoft called. MSJSON dateformat.
 
