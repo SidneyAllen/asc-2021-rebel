@@ -37,10 +37,8 @@ public class {{{classname}}}Example {
         /*{{{dataType}}} {{{paramName}}} = {{{example}}}; // {{{dataType}}} | {{{unescapedDescription}}}*/
         {{/allParams}}
 
-        /*
         {{#vendorExtensions}}{{#x-example}}{{#is_object}}{{{keyPascal}}} {{{key}}} = new {{{keyPascal}}}();{{/is_object}}{{^is_object}}
         {{object}}.set{{{keyPascal}}}({{java}}{{^java}}{{#is_date}}new Date({{/is_date}}"{{{default}}}"{{#is_date}}){{/is_date}}{{/java}});{{/is_object}}{{/x-example}}{{/vendorExtensions}}
-        */
 
         try {
             {{#returnType}}{{{.}}} result = {{/returnType}}apiInstance.{{{operationId}}}({{#allParams}}{{{paramName}}}{{^-last}}, {{/-last}}{{/allParams}});{{#returnType}}

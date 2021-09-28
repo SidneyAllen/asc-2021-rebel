@@ -142,10 +142,10 @@ components:
           example: "/Date(1573755038314)/"
           x-is-msdate: true
         adoptionDate:
-          description: The date and time when the pet was adopted
+          description: The date when the pet was adopted
           type: string
           format: date
-          example: "2021-09-10T11:30:00"
+          example: "2021-09-10T00:00:00"
     Pets:
       type: array
       items:

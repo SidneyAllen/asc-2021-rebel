@@ -12,8 +12,7 @@ args2="generate
 -c /local/scripts/java.json  
 -o /local/output/java 
 --model-package com.pet.models"
-#--global-property debugModels
-#debugOperations
+#--global-property debugModels,debugOperations
 
 echo "**************  Generate Pet Java SDK ******************"
 docker run --rm -v ${PWD}:/local -e JAVA_OPTS="-Dlog.level=error" openapitools/openapi-generator-cli:v4.3.1 $args2
