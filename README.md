@@ -61,6 +61,21 @@ x-example:
         object: pet
 ```
 
+In our mustache template, we wrap our custom object in the <vendorExtension> tag
+
+```
+{{#vendorExtensions}}
+    {{#x-example}}
+        {{#is_object}}
+            {{{keyPascal}}} {{{key}}} = new {{{keyPascal}}}();
+        {{/is_object}}
+        {{^is_object}}
+            {{object}}.set{{{keyPascal}}}({{java}}{{^java}}{{#is_date}}new Date({{/is_date}}"{{{default}}}"{{#is_date}}){{/is_date}}{{/java}});
+        {{/is_object}}{    
+    {/x-example}}
+{{/vendorExtensions}}
+```
+
 The custom object produces the following Java code snippet.
 
 ```
