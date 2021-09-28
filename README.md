@@ -20,6 +20,8 @@ Return to the generator folder and run the build.sh file.
 ## Custom Property
 A custom property has been added to the Pet schema.  The extension is a boolean and used to identify properties which are dates, but do not follow a standard date format.  In this example, the date format created by Microsoft called. MSJSON dateformat.
 
+The OpenAPI extension is defined as x-is-msdate and used in the mustache templates for the Java SDK to modify the code generated so a native Java date is both returned and accepted then converted to MSJSON date format.
+
 ```
 dob:
     description: Date of birth – YYYY-MM-DD
@@ -28,7 +30,60 @@ dob:
     x-is-msdate: true`
 ```
 
-The OpenAPI extension is defined as x-is-msdate and used in the mustache templates for the Java SDK to modify the code generated so a native Java date is both returned and accepted then converted to MSJSON date format.
+In the pojo.mustache template  an alternate method this is added only if x-is-msdate is true (or exists)
+
+```
+{{#vendorExtensions}}
+{{#x-is-msdate}}
+  /** 
+  {{#description}}
+   * {{description}}
+  {{/description}}
+  {{^description}}
+   * {{name}}
+  {{/description}}
+   * @return LocalDate
+  **/
+  public LocalDate {{getter}}AsDate() {
+    if (this.{{name}} != null) {
+      try {
+        return util.convertStringToDate(this.{{name}});
+      } catch (IOException e) {
+        e.printStackTrace();
+      }  
+    }
+    return null;        
+  }
+{{/x-is-msdate}}
+{{/vendorExtensions}}
+```
+
+The code that is generated includes a getter
+
+```
+public LocalDate getDobAsDate() {
+    if (this.dob != null) {
+      try {
+        return util.convertStringToDate(this.dob);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }  
+    }
+  return null;        
+}
+```
+
+and setter
+
+```
+public void setDob(LocalDate dob) {
+    //CONVERT LocalDate args into MS DateFromat String
+    Instant instant =  dob.atStartOfDay(ZoneId.of("UTC").normalized()).toInstant();  
+    long timeInMillis = instant.toEpochMilli();
+
+    this.dob = "/Date(" + Long.toString(timeInMillis) + "+0000)/";
+}
+```
 
 ## Custom Object
 A custom object has been added to the Pet create operation. Objects are for defining more complex object, arrays or a combination of both.  In this example, we are defining the struture of an example requestBody in a non-language specific way, so that runnable code examples can be generated for our SDK documentation.
